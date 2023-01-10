@@ -1,9 +1,12 @@
 <?php
 // Config global constant variable
 $domain = $_SERVER["SERVER_NAME"];
-if($_SERVER["SERVER_PORT"] != 80)
+if($_SERVER["SERVER_PORT"] != 80) {
 	$domain .= ":".$_SERVER["SERVER_PORT"];
-	
+}
+
+session_start();
+
 $relRoot = dirname($_SERVER['SCRIPT_NAME']);
 if(substr($relRoot, -1) != "/") $relRoot .= "/"; 
 define('RootURL', 'http://'.$domain.$relRoot);
@@ -21,6 +24,12 @@ define('DB_NAME','blogphp');
 
 // Global variables
 $app = [];
+
+$app['recordTime'] = [
+	'created'	=>	'created',
+	'updated'	=>	'updated'
+];
+
 $mediaFiles = [
 	'css'	=>	[],
 	'js'	=>	[]

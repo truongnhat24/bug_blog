@@ -1,26 +1,40 @@
 <?php
 class user_model extends main_model {
 
+	public function __construct()
+	{		
+		return parent::__construct();
+	}
 	public function createTable() {
 		// sql to create table
 		$sql = "CREATE TABLE users (
-			user_id 			INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+			id 			INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+			username			TEXT(255)    NOT NULL,
 			nickname			VARCHAR(255) NOT NULL,
 			email				VARCHAR(555) NOT NULL,
-			facebook_token 		VARCHAR(255) NOT NULL,
-			google_token		VARCHAR(255) NOT NULL,
-			hashed_password		VARCHAR(555) NOT NULL,
-			signup_url	 		VARCHAR(255) NOT NULL,
-			signup_referer_url	VARCHAR(63) NOT NULL,
-			signup_device		VARCHAR(63) NOT NULL,
-			signup_ip		 	VARCHAR(63) NOT NULL,
-			credit				BIGINT(16)	DEFAULT	0,
-			account_enabled		BOOLEAN NOT NULL DEFAULT FALSE,
-			account_creation 	DATETIME DEFAULT CURRENT_TIMESTAMP
+			password		    VARCHAR(555) NOT NULL,
+			created         	DATETIME	 NOT NUll,
 		)";
 
 		$result = $this->con->query($sql);
 		return $result;
+	}
+
+	public function addRecord($datas) {
+		$datas['password'] = md5($datas['password']);		
+		return parent::addRecord($datas);
+	}
+
+	public function loginData($user) {
+		$loginPass = md5($user['password']);
+		$loginEmail = $user['email'];
+		$query = "SELECT * FROM $this->table where email = '$loginEmail' and password = '$loginPass'";
+		$result = mysqli_query($this->con,$query);
+		
+		if($result) {
+			$record = mysqli_fetch_assoc($result);
+		} else $record=false;
+		return $record;
 	}
 }
 ?>

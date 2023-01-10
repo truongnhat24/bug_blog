@@ -4,8 +4,11 @@ class main_controller {
 	protected $model; 
 	protected $controller = "home";
 	protected $action = "index";
-	public	 $components;
-	//protected $htmlhp;
+	protected $tables;
+	protected $records;
+	protected $blogs;
+	public	  $components;
+	
 	
 	public function  __construct() {
 		global $cn, $app;
@@ -21,19 +24,37 @@ class main_controller {
 					$id='';
 					if(isset($_GET['id']))	$id=$_GET['id'];
 					$this->{$this->action}($id);
-				} else {
+					
+				}
+				else {
 					$params = array_slice($_GET, 2, count($_GET));
 					$this->{$this->action}($params);
 				}
-			} else $this->{$this->action}();
+			} 
+			// else if($this->action == 'loginSubmit') {
+			// 	$this->action = 'login';
+			// } 
+			else $this->{$this->action}();   //goi ham
+			
 		} else {
 			include "views/staticpages/error.php";
+		}
+	}
+
+	public function checkAuth($datas) {
+		if(empty($_SESSION['auth'])){
+			header('location: login.php');
+
 		}
 	}
 	
 	public function display($options=null) {
 		if(!isset($options['ctl']))	$options['ctl'] = $this->controller;
 		if(!isset($options['act']))	$options['act'] = $this->action;
+		if($this->action == 'loginSubmit'){
+			$this->action = 'login';
+			$options['act'] = $this->action;
+		}
 		include_once "views/".$options['ctl']."/".$options['act'].".php";
 	}
 

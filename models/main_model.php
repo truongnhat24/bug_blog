@@ -11,7 +11,7 @@ class Main_Model
 		if(!$this->table)	$this->setTableName();
 	}
 
-   public static function getInstance() {
+   	public static function getInstance() {
 		$called_class = get_called_class();
 		if (!array_key_exists($called_class,self::$instance)) {
 			self::$instance[$called_class] = new $called_class();
@@ -97,10 +97,37 @@ class Main_Model
 		$query = "DELETE FROM $this->table WHERE id=$id".$conditions;
 		return mysqli_query($this->con,$query);
 	}
+
+	public function recordTime($field) {
+    	$fields = $this->getColumnsName();
+    	$recordTime = "";
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
+    	$datetime = date('Y-m-d h:i:s', time());
+    	if(in_array($field, $fields)) {
+    		$recordTime .= '"'.$datetime.'"';
+    	}
+    	return $recordTime;
+    }
+	
+	public function getColumnsName() {
+    	$sql = 'DESCRIBE '.$this->table;
+		$result = mysqli_query($this->con,$sql);
+
+		$rows = array();
+		if($result){
+			while($row = mysqli_fetch_assoc($result)) {
+				$rows[] = $row['Field'];
+			}
+		}
+
+		return $rows;
+    }
 	
 	public function addRecord($datas) {
+		global $app;
 		$fields = $values = '';
 		$i=0;
+		
 		foreach($datas as $k=>$v) {
 			if($i) {
 				$fields .=',';
@@ -110,6 +137,12 @@ class Main_Model
 			$values .= "'".$v."'";
 			$i++;
 		}
+
+		if($createdTime = $this->recordTime($app['recordTime']['created'])) {
+			$fields .= ','.$app['recordTime']['created'];
+			$values .=','.$createdTime;
+		}
+
 		$query = "INSERT INTO $this->table ($fields) VALUES ($values)";
 		return mysqli_query($this->con,$query);
 	}
@@ -136,4 +169,7 @@ class Main_Model
     	}
     	return $arrReturn;
 	}
+
+	
 }
+?>

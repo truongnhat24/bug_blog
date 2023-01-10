@@ -3,7 +3,6 @@ class html_helpers{
 	public static function url($options=null) {
 		if($options=='/')
 			return 'index.php';
-			
 		global $cn, $app;
 		if(!isset($options['ctl'])) {
 			$options['ctl'] = $cn;
