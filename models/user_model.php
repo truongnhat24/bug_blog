@@ -29,6 +29,7 @@ class user_model extends main_model {
 		$loginPass = md5($user['password']);
 		$loginEmail = $user['email'];
 		$query = "SELECT * FROM $this->table where email = '$loginEmail' and password = '$loginPass'";
+		// exit ($query);
 		$result = mysqli_query($this->con,$query);
 		
 		if($result) {

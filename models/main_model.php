@@ -74,6 +74,8 @@ class Main_Model
 		}
 		$query = "SELECT ".$fields." FROM ".$this->table.$conditions;
 		$result = mysqli_query($this->con,$query);
+
+		$result = $result->fetch_all(MYSQLI_ASSOC);
 		return $result;
 	}
 
@@ -89,6 +91,7 @@ class Main_Model
 			//$record = mysqli_fetch_row($result);
 			$record = mysqli_fetch_assoc($result);
 		} else $record=false;
+		
 		return $record;
 	}
 	

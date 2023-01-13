@@ -7,8 +7,10 @@
 <div class="content">
 	<h1>List blogs</h1>
 	<hr>
-	<?php $usertables = [];?>
-	<?php if(count($this->blogs)) { ?>
+	<?php $userblogs = [];
+		$userblogs = $this->records;
+	?>
+	<?php if(count($userblogs)) { ?>
 		<ol>
 		<?php foreach($this->blogs as $blog) { ?>
 			<li><a href="<?php echo html_helpers::url(['ctl'=>'blogs', 'act'=>'getfields', 'params'=>['blog'=>$blog]]); ?>"><?php echo $blog ?></a></li>

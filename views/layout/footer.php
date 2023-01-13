@@ -1,8 +1,8 @@
+<!-- /END THE FEATURETTES -->
+</div><!-- /.container -->
+<!-- FOOTER -->
+<footer class="container">
     <hr class="featurette-divider">
-    <!-- /END THE FEATURETTES -->
-  </div><!-- /.container -->
-  <!-- FOOTER -->
-  <footer class="container">
     <p class="float-end"><a href="#">Back to top</a></p>
     <div class="footer">
 			<p>MyViewers &copy; <?php echo date('d-m-y'); ?></p>

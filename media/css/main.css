@@ -2,6 +2,7 @@ body {
   padding-top: 5rem;
   padding-bottom: 3rem;
   color: #5a5a5a;
+  background-color: #f0f0f0 !important;
 }
 main >.container:first-child {
 	min-height: 500px;

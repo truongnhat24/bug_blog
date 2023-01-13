@@ -35,15 +35,6 @@
           <li class="nav-item">
             <a class="nav-link text-light" href="<?php echo html_helpers::url(['ctl'=>'contact']); ?>">Contact us</a>
           </li>
-          
-          <!-- <?php $test = 1;
-          if ($test == 1 )
-            { ?>
-              <li class="nav-item">
-                <a class="nav-link" href="<?php echo html_helpers::url(['ctl'=>'students']); ?>">Concar</a>
-              </li>
-            <?php } ?> -->
-        
         </ul>
         <form class="d-flex">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -54,7 +45,7 @@
           <?php if ($_SESSION) {?>     
             <span class="me-2 text-light d-block"> 
               welcome, 
-              <span class="text-warning"><?php echo $_SESSION['name'] ?></span>
+              <a class="text-warning" href="<?php echo html_helpers::url(['ctl'=>'users']); ?>"><?php echo $_SESSION['name'] ?></a>
             </span>       
             <a href="<?php echo html_helpers::url(['ctl'=>'users', 'act'=>'logout']); ?>" class="btn btn-custom-auth text-light">Logout</a>
           <?php } else {?>          

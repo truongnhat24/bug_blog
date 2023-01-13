@@ -1,11 +1,10 @@
 <?php
-class student_model extends main_model
+class blog_model extends main_model
 {
-	//protected $table = 'students';
-	/*
-	protected function __construct() {
+	protected $table = 'blogs';
+	
+	public function __construct() {
 		parent::__construct();
 		
 	}
-	*/
 }
