@@ -42,6 +42,14 @@ body section.bg-image {
 }
 
 .link-btn h3 {
-    margin-top: 8px;
-    
+    margin-top: 8px;    
+}
+
+/* User profile css */
+.profile-page {
+    background-color: #eee;
+}
+
+.profile-avatar {
+    width: 150px !important;
 }

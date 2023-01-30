@@ -26,15 +26,15 @@
           <li class="nav-item">
             <a class="nav-link active text-light" aria-current="page" href="<?php echo html_helpers::url('/'); ?>">Home</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link text-light" href="<?php echo html_helpers::url(['ctl'=>'about']); ?>">About us</a>
-          </li>
+          </li> -->
           <li class="nav-item">
-            <a class="nav-link text-light" href="<?php echo html_helpers::url(['ctl'=>'blogs']); ?>">Blogs</a>
+            <a class="nav-link text-light" href="<?php echo html_helpers::url(['ctl'=>'blogs']);?>">Blogs</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link text-light" href="<?php echo html_helpers::url(['ctl'=>'contact']); ?>">Contact us</a>
-          </li>
+          </li> -->
         </ul>
         <form class="d-flex">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -42,10 +42,10 @@
         </form>
 
         <div class="btn-login-group me-3 ms-5 d-flex align-items-center">
-          <?php if ($_SESSION) {?>     
+          <?php if ($_SESSION['auth']) {?>     
             <span class="me-2 text-light d-block"> 
               welcome, 
-              <a class="text-warning" href="<?php echo html_helpers::url(['ctl'=>'users']); ?>"><?php echo $_SESSION['name'] ?></a>
+              <a class="text-warning" href="<?php echo html_helpers::url(['ctl'=>'users']); ?>"><?php echo $_SESSION['auth']['name'] ?></a>
             </span>       
             <a href="<?php echo html_helpers::url(['ctl'=>'users', 'act'=>'logout']); ?>" class="btn btn-custom-auth text-light">Logout</a>
           <?php } else {?>          

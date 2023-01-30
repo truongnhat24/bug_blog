@@ -4,62 +4,66 @@
 ?>
 
 <?php include_once 'views/layout/'.$this->layout.'header.php'; ?>
-<div class="content">
-	<h1>List blogs</h1>
-	<hr>
-	<?php $userblogs = [];
-		$userblogs = $this->records;
-	?>
-	<?php if(count($userblogs)) { ?>
-		<ol>
-		<?php foreach($this->blogs as $blog) { ?>
-			<li><a href="<?php echo html_helpers::url(['ctl'=>'blogs', 'act'=>'getfields', 'params'=>['blog'=>$blog]]); ?>"><?php echo $blog ?></a></li>
-			<?php if($blog == 'users' || $blog == 'activity_user') array_push($usertables,$blog); ?>
-		<?php } ?>
-		</ol>
-		<?php if(!count($usertables)) { ?>
-			<p> There are no users & activity_user tables added, please <a href="<?php echo html_helpers::url(['ctl'=>'blogs', 'act'=>'create']); ?>">click here</a> to add 2 tables <strong>users</strong> & <strong>user_activity</strong> </p>
-		<?php } ?>
 
-	<?php } else {?>
-		<p> There are no table added, please <a href="<?php echo html_helpers::url(['ctl'=>'blogs', 'act'=>'create']); ?>">click here</a> to add 2 tables <strong>users</strong> & <strong>user_activity</strong> </p>
-	<?php }; ?>
-	<div class="row">
-		<div class="col-12 col-lg-9">
-			<div class="d-flex"> 
-				<a class="user-avatar me-5">
-					<img src="media/img/favicon.png" alt="avatar">					
-				</a>
-				<div class="col-12 col-md-6">
-					<div class="blog-user d-flex justify-content-between">
-						<p>By <a href="#">james smith</a></p>
-						<span>22-12-2022</span>				
-					</div>
-					
-					<div>
-						<h4><a href="#" class="post-headline">Party people in the house</a></h4>
-					</div>
-					
-					<ul class="status d-flex">
-						<li class="d-flex me-4">
-							<a class="like-icon" href="#">
-								<img src="media/img/like.png" alt="like">
-							</a>
-							<span>1</span>
-						</li>
-						<li class="d-flex">
-							<a href="#">
-								<img src="media/img/comment.png" alt="comment">
-							</a>
-							<a href="#">
-								<p>3 comments</p>
-							</a>
-						</li>
-					</ul>
-				</div>				
-			</div>
-			<hr>		
-		</div>
+<div class="row row-offcanvas row-offcanvas-right">
+  <div class="col-xs-12 col-sm-9">
+	<div class="table-responsive">
+	  <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th width="20%">Title</th>
+            <th width="10%">Category</th>
+            <th width="30%">Photo</th>
+            <th width="15%">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php if($this->records) { ?>
+			<?php while($row = mysqli_fetch_array($this->records)) : ?>
+			  <tr>
+				<td width="20%"><?php echo $row['product_name']; ?></td>
+				<td width="5%"><?php echo $row['category']; ?></td>
+				<td width="20%"><img src="<?php echo "media/upload/" .$this->controller.'/'.$row['photo']; ?>" alt="<?php echo $row['product_name']; ?>" class="img-thumbnail"></td>
+				<td width="10%">
+				  <a class="btn btn-outline-info table-link" role="button" href="<?php echo html_helpers::url(
+								['ctl'=>'products', 
+									  'act'=>'view', 
+									  'params'=>array(
+										'id'=>$row['id']
+										)
+								]); ?>">
+					<i class="fa fa-eye" aria-hidden="true"></i>
+				  </a>
+				  <a class="btn btn-outline-warning" role="button" href="<?php echo html_helpers::url(
+								array('ctl'=>'products', 
+									  'act'=>'edit', 
+									  'params'=>array(
+										'id'=>$row['id']
+								))); ?>">
+					<i class="fas fa-edit"></i>
+				  </a>
+				  <a class="btn btn-outline-danger table-link danger delete" role="button" href="<?php echo html_helpers::url(
+								array('ctl'=>'products', 
+									  'act'=>'del', 
+									  'params'=>array(
+										'id'=>$row['id']
+								))); ?>" >
+					<i class="fas fa-trash"></i>
+				  </a>
+				</td>
+			  </tr>
+			<?php endwhile; ?>
+		<?php } else { ?>
+			  <tr>
+				<td colspan="7" scope="row">There are no blog!</td>
+			  </tr>
+		<?php }  ?>
+        </tbody>
+      </table>
 	</div>
+  </div>
+  <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
+	<?php include_once 'views/widgets/sidebar_blog.php'; ?>
+  </div>
 </div>
 <?php include_once 'views/layout/'.$this->layout.'footer.php'; ?>

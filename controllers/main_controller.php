@@ -41,10 +41,11 @@ class main_controller {
 		}
 	}
 
-	public function checkAuth($datas) {
-		if(empty($_SESSION['auth'])){
-			header('location: login.php');
-
+	public function checkAuth($datas=null) {
+		if($_SESSION['auth']) {
+			$this->display();
+		} else {
+			header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'login')));
 		}
 	}
 	
@@ -56,6 +57,13 @@ class main_controller {
 			$options['act'] = $this->action;
 		}
 		include_once "views/".$options['ctl']."/".$options['act'].".php";
+	}
+
+	public function getData($id, $str) {
+		$option['act'] = $str;
+		$user = new user_model();
+		$userData = $user->getRecord($id);
+		return $userData;
 	}
 
     public function setProperty($name, $value) {

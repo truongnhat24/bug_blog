@@ -151,15 +151,21 @@ class Main_Model
 	}
 	
 	public function editRecord($id,$datas){
+		global $app;
 		$setDatas = '';
 		$i=0;
 		foreach($datas as $k=>$v) {
 			if($i) {
-				$setDatas .=',';
+				$setDatas .= ",";
 			}
 			$setDatas .= $k."='".$v."'";
 			$i++;
 		}
+
+		if($updatedTime = $this->recordTime($app['recordTime']['updated'])) {
+			$setDatas .= ','.$app['recordTime']['updated'] .'='.$updatedTime ;
+		}
+
         $query = "UPDATE $this->table SET $setDatas WHERE id='$id'";
 		return mysqli_query($this->con,$query);
         //$result = mysqli_query($this->con,$query) or die("MySQL error: " . mysqli_error($this->con) . "<hr>\nQuery: $query");
