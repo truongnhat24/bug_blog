@@ -1,0 +1,27 @@
+.set-background {
+    background-color: #ccc;
+}
+
+h1 {
+    padding: 20px 0;
+    background-color: #f05123 !important;
+    color: #fff;
+}
+
+label {
+    color: #f05123;
+    font-size: 18px !important;
+}
+
+.btn-custom-auth {
+    background-color: #f05123 !important;
+  }
+  
+.btn-custom-auth:hover {
+    background-color: #b92a03 !important;
+}
+
+img.img-thumbnail {
+    width: 230px !important;
+    height: 270px !important;
+}

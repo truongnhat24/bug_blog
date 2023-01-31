@@ -42,7 +42,7 @@
         </form>
 
         <div class="btn-login-group me-3 ms-5 d-flex align-items-center">
-          <?php if ($_SESSION['auth']) {?>     
+          <?php if (!empty($_SESSION['auth'])) {?>     
             <span class="me-2 text-light d-block"> 
               welcome, 
               <a class="text-warning" href="<?php echo html_helpers::url(['ctl'=>'users']); ?>"><?php echo $_SESSION['auth']['name'] ?></a>
