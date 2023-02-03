@@ -1,0 +1,7 @@
+p {
+    display: flex;
+}
+
+img {
+    max-width: 40vw !important;
+}

@@ -23,8 +23,7 @@ class main_controller {
 				if($this->action=='view' || $this->action=='edit' || $this->action=='del') {
 					$id='';
 					if(isset($_GET['id']))	$id=$_GET['id'];
-					$this->{$this->action}($id);
-					
+					$this->{$this->action}($id);					
 				}
 				else {
 					$params = array_slice($_GET, 2, count($_GET));

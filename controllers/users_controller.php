@@ -2,9 +2,19 @@
     class users_controller extends main_controller {
         
         protected $errors;
+        protected user_model $user;
+        public function __construct()
+        {
+            $this->user = user_model::getInstance();
+            parent::__construct();
+        }
 
         public function index() {
-            $this->display();
+            if (isset($_SESSION['auth'])){                
+                $this->display();
+            } else {
+                header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'login')));
+            }
         }
         
         public function login() {
@@ -30,15 +40,13 @@
             if(isset($_POST['edit-btn'])) {
                 $id = $_SESSION['auth']['id'];
                 $userData = $_POST['data'][$this->controller];
-                //var_dump($_FILES); exit();
                 if(!empty($userData['name']))  {
                     if(isset($_FILES) and $_FILES["image"]["name"]) {
-                        $user = user_model::getInstance();
                         if(file_exists(UploadREL .$this->controller.'/'.$records['image']))
                             unlink(UploadREL .$this->controller.'/'.$records['image']);
                         $userData['image'] = SimpleImage_Component::uploadImg($_FILES, $this->controller);
                     }
-                    if ($user->editRecord($id, $userData)){
+                    if ($this->user->editRecord($id, $userData)){
                         header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'user_profile')));
                     }
                 }
@@ -56,15 +64,13 @@
         public function loginSubmit() {
             if(isset($_POST['log-user'])) {
                 $userData = $_POST['data'][$this->controller];
-                $user = new user_model();  //khoi tao class de dung getInstance
-                $userCur = $user->loginData($userData);
+                $userCur = $this->user->loginData($userData);
                 if (!$userCur){
                     $this->errors = 'Email or password invalid';
                     return $this->display();
                 }
                 else {
                     $_SESSION['auth'] = $userCur;
-                    $user = user_model::getInstance();                
                     header( "Location: ".html_helpers::url(array('ctl'=>'home')));
                 }
             }
@@ -74,8 +80,7 @@
             if(isset($_POST['reg-user'])) {
                 $userData = $_POST['data'][$this->controller];
                 if(!empty($userData['username']))  {
-                    $user = user_model::getInstance();
-                    if ($user->addRecord($userData)){
+                    if ($this->user->addRecord($userData)){
                         header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'login')));
                     }
                 }

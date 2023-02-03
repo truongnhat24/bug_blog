@@ -147,6 +147,7 @@ class Main_Model
 		}
 
 		$query = "INSERT INTO $this->table ($fields) VALUES ($values)";
+		//var_dump($query);exit();
 		return mysqli_query($this->con,$query);
 	}
 	
@@ -165,8 +166,13 @@ class Main_Model
 		if($updatedTime = $this->recordTime($app['recordTime']['updated'])) {
 			$setDatas .= ','.$app['recordTime']['updated'] .'='.$updatedTime ;
 		}
+		
+		if (gettype($id) == 'array') {
+			$id = $id["id"];
+		}
 
         $query = "UPDATE $this->table SET $setDatas WHERE id='$id'";
+		
 		return mysqli_query($this->con,$query);
         //$result = mysqli_query($this->con,$query) or die("MySQL error: " . mysqli_error($this->con) . "<hr>\nQuery: $query");
     }
