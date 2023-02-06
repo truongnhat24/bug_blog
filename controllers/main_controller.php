@@ -48,6 +48,14 @@ class main_controller {
 		}
 	}
 	
+	public function checkCurrentAuth($id) {
+		if($_SESSION['auth']['id'] == $id) {
+			return true;
+		} else {
+			include "views/staticpages/forbidden.php";		
+		}
+	}
+	
 	public function display($options=null) {
 		if(!isset($options['ctl']))	$options['ctl'] = $this->controller;
 		if(!isset($options['act']))	$options['act'] = $this->action;

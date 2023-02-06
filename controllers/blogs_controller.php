@@ -13,7 +13,7 @@ class blogs_controller extends main_controller
 		if (isset($_SESSION['auth'])) {
 			$id = $_SESSION['auth']['id'];
 			$blog = blog_model::getInstance();
-			$fields = "id, title, category, image";
+			$fields = "id, title, category, image, slug";
 			$record = $this->blog->getRecordByUserId($id, $fields);
 			$this->setProperty('records', $record);
 			$this->checkAuth();
@@ -43,10 +43,15 @@ class blogs_controller extends main_controller
 	// 	$this->display(['act'=>'fields']);
 	// }
 
-	public function view($id) 
-	{
+	public function getBlogData($id) {
 		$record = $this->blog->getRecord($id);
 		$this->setProperty('records', $record);
+		return $record;
+	}
+
+	public function view($id) 
+	{
+		$this->getBlogData($id);
 		$this->display();
 	}
 
@@ -57,9 +62,8 @@ class blogs_controller extends main_controller
 
 	public function edit($id)
 	{
-		$record = $this->blog->getRecord($id);
-		$this->setProperty('records', $record);
-		$this->display();
+		$record = $this->getBlogData($id);
+		if($this->checkCurrentAuth($record['user_id'])) $this->display();		
 	}
 
 	public function del($id) 
@@ -72,10 +76,10 @@ class blogs_controller extends main_controller
 		header( "Location: ".html_helpers::url(array('ctl'=>'blogs')));
 	}
 
-	public function getBlogs()
-	{
-		$blog = new blog_model();
-	}
+	// public function getBlogs()
+	// {
+	// 	$blog = new blog_model();
+	// }
 
 	public function createSubmit()
 	{

@@ -1,7 +1,7 @@
 <?php
-global $mediaFiles;
-array_push($mediaFiles['css'], "media/css/blogs.css");
-array_push($mediaFiles['css'], RootREL.'media/fontawesome/css/all.css');
+	global $mediaFiles;
+	array_push($mediaFiles['css'], "media/css/blogs.css");
+	array_push($mediaFiles['css'], RootREL.'media/fontawesome/css/all.css');
 ?>
 
 <?php include_once 'views/layout/' . $this->layout . 'header.php'; ?>
@@ -33,7 +33,8 @@ array_push($mediaFiles['css'], RootREL.'media/fontawesome/css/all.css');
 																											'ctl' => 'blogs',
 																											'act' => 'view',
 																											'params' => array(
-																												'id' => $row['id']
+																												'id' => $row['id'],
+																												'slug' => $row['slug']																												
 																											)
 																										]
 																									); ?>">
