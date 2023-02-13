@@ -1,10 +1,12 @@
 <?php
 class blogs_controller extends main_controller
 {
+	protected comment_model $comment;
 	protected blog_model $blog;
 	public function __construct()
 	{
 		$this->blog = blog_model::getInstance();
+		$this->comment = comment_model::getInstance();
 		parent::__construct();
 	}
 
@@ -49,8 +51,15 @@ class blogs_controller extends main_controller
 		return $record;
 	}
 
+	public function getComment($id) {
+		$record = $this->comment->getRecordUser($fields = '*', "blog_id =". $id);
+		$this->setProperty('commentRecords', $record);		
+		return $record;
+	}
+
 	public function view($id) 
 	{
+		$this->getComment($id);
 		$this->getBlogData($id);
 		$this->display();
 	}

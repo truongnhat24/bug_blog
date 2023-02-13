@@ -6,6 +6,7 @@ class main_controller {
 	protected $action = "index";
 	protected $tables;
 	protected $records;
+	protected $commentRecords;
 	protected $blogs;
 	public	  $components;
 	

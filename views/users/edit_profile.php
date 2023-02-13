@@ -47,9 +47,7 @@
         <label for="image" class="col-sm-2 col-form-label">image</label>
         <div class="col-sm-10 image-upload">
             <input name="image" type="file" class="form-control" id="image" placeholder="image">
-            <img src="<?php if (!empty($data['image'])) {
-                echo "media/upload/" .$this->controller.'/'.$data['image']; 
-            } else { echo "media/img/image_default.png";}?>" 
+            <img src="<?php echo "media/upload/" .$this->controller.'/'.$data['image'];?>" 
             alt="<?php echo $data['name']; ?>" class="img-thumbnail profile-image">
         </div>
     </div>

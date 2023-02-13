@@ -21,7 +21,8 @@ class user_model extends main_model {
 	}
 
 	public function addRecord($datas) {
-		$datas['password'] = md5($datas['password']);		
+		$datas['password'] = md5($datas['password']);
+		$datas['image'] = 'avatar_default.png';
 		return parent::addRecord($datas);
 	}
 
@@ -29,7 +30,6 @@ class user_model extends main_model {
 		$loginPass = md5($user['password']);
 		$loginEmail = $user['email'];
 		$query = "SELECT * FROM $this->table where email = '$loginEmail' and password = '$loginPass'";
-		// exit ($query);
 		$result = mysqli_query($this->con,$query);
 		
 		if($result) {

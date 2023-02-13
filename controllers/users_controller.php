@@ -42,8 +42,11 @@
                 $userData = $_POST['data'][$this->controller];
                 if(!empty($userData['name']))  {
                     if(isset($_FILES) and $_FILES["image"]["name"]) {
-                        if(file_exists(UploadREL .$this->controller.'/'.$records['image']))
-                            unlink(UploadREL .$this->controller.'/'.$records['image']);
+                        if(file_exists(UploadREL .$this->controller.'/'.$records['image'])) {
+                            if ($records['image'] != 'avatar_default.png'){
+                                unlink(UploadREL .$this->controller.'/'.$records['image']);
+                            }
+                        }
                         $userData['image'] = SimpleImage_Component::uploadImg($_FILES, $this->controller);
                     }
                     if ($this->user->editRecord($id, $userData)){
