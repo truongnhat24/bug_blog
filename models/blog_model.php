@@ -24,12 +24,6 @@ class blog_model extends main_model
 		}
 		$query = "SELECT $fields FROM $this->table where user_id=$id".$conditions;
 		$record = mysqli_query($this->con,$query);
-		// if($result) {
-		// 	//$record = mysqli_fetch_array($result);
-		// 	//$record = mysqli_fetch_row($result);
-		// 	$record = mysqli_fetch_assoc($result);
-		// } else $record=false;
-		
 		return $record;
 	}
 }

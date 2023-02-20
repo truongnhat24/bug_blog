@@ -1,12 +1,14 @@
 <?php
 class blogs_controller extends main_controller
 {
+	protected like_model $like;
 	protected comment_model $comment;
 	protected blog_model $blog;
 	public function __construct()
 	{
 		$this->blog = blog_model::getInstance();
 		$this->comment = comment_model::getInstance();
+		$this->like = like_model::getInstance();
 		parent::__construct();
 	}
 
@@ -14,7 +16,6 @@ class blogs_controller extends main_controller
 	{
 		if (isset($_SESSION['auth'])) {
 			$id = $_SESSION['auth']['id'];
-			$blog = blog_model::getInstance();
 			$fields = "id, title, category, image, slug";
 			$record = $this->blog->getRecordByUserId($id, $fields);
 			$this->setProperty('records', $record);
@@ -23,8 +24,6 @@ class blogs_controller extends main_controller
 			header("Location: " . html_helpers::url(array('ctl' => 'users', 'act' => 'login')));
 		}
 	}
-
-
 
 	public function create()
 	{
@@ -45,23 +44,45 @@ class blogs_controller extends main_controller
 	// 	$this->display(['act'=>'fields']);
 	// }
 
-	public function getBlogData($id) {
+	public function getBlogData($id) 
+	{
 		$record = $this->blog->getRecord($id);
 		$this->setProperty('records', $record);
 		return $record;
 	}
 
-	public function getComment($id) {
+	public function getComment($id) 
+	{
 		$record = $this->comment->getRecordUser($fields = '*', "blog_id =". $id);
-		$this->setProperty('commentRecords', $record);		
+		$this->setProperty('commentRecords', $record);
 		return $record;
 	}
 
-	public function view($id) 
+	public function getLike($id) {
+		$record = $this->like->getLikedRecords($_SESSION['auth']['id'], $id, "type_id", "type = 'comment'");
+		$this->setProperty('likeRecords', $record);
+		$liked = array();
+		foreach ($record as $parentArray) {
+			foreach ($parentArray as $k=>$v) {
+				// array_push($liked, $v);
+				$liked[]=$v;
+			}
+		}
+		return $liked;
+	}
+
+	public function view($id)
 	{
-		$this->getComment($id);
-		$this->getBlogData($id);
-		$this->display();
+		if(isset($_SESSION['auth'])) 
+		{
+			$this->getComment($id);
+			$this->getBlogData($id);
+			$this->likeRecords=$this->getLike($id);
+			$this->display();
+		} else {
+            header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'login')));
+		}
+
 	}
 
 	public function add()
@@ -84,11 +105,6 @@ class blogs_controller extends main_controller
 		$this->blog->delRecord($id);
 		header( "Location: ".html_helpers::url(array('ctl'=>'blogs')));
 	}
-
-	// public function getBlogs()
-	// {
-	// 	$blog = new blog_model();
-	// }
 
 	public function createSubmit()
 	{

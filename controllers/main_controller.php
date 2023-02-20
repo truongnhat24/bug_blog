@@ -7,6 +7,7 @@ class main_controller {
 	protected $tables;
 	protected $records;
 	protected $commentRecords;
+	protected $likeRecords;
 	protected $blogs;
 	public	  $components;
 	

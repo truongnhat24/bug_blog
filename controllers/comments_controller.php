@@ -15,7 +15,18 @@ class comments_controller extends main_controller
 			$commentData = array('user_id' => $id, 'blog_id' => $params['id'], 'comment_content' => $_POST['content']);
 			if (!empty($commentData['comment_content'])) {
 				echo json_encode($this->comment->addRecord($commentData));
-			} 
+			}
+		}
+	}
+
+	public function reply()
+	{
+		if (isset($_POST['content'])) {
+			$id = $_SESSION['auth']['id'];
+			$commentData = array('user_id' => $id, 'blog_id' => $_POST['blog_id'], 'comment_content' => $_POST['content']);
+			if (!empty($commentData['comment_content'])) {
+				echo json_encode($this->comment->addReplyRecord($_POST['parentId'], $commentData));
+			}
 		}
 	}
 }

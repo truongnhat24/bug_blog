@@ -99,7 +99,6 @@ class Main_Model
 			//$record = mysqli_fetch_row($result);
 			$record = mysqli_fetch_assoc($result);
 		} else $record = false;
-		
 		return $record;
 	}
 
