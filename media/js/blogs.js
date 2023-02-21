@@ -9,6 +9,7 @@ var Comment = {
 		comment_form: 		"form.comment-form",
 		comment: 			"textarea#message",
 		comment_button: 	"div button.comment-btn",
+		comment_reply: 		".comment-ances .comment-reply",
 		like_button: 		".media ul .like-btn",
 		like_group: 		".media ul .like-group",
 		like_count: 		".media ul .like-group span",
@@ -18,6 +19,7 @@ var Comment = {
 		reply_form: 		"form.reply-form",
 		reply_submit: 		"div button.reply-button",
 		reply_content: 		"textarea.reply-content",
+		delete_button:		".media ul .delete-btn",
 	},
 
 	init: function () {
@@ -65,23 +67,20 @@ var Comment = {
 		$(Comment.SELECTORS.comment_ances).on("click", Comment.SELECTORS.like_button,	function (event) {
 			event.stopPropagation();
 			tc = $(this);
-
 			url = tc.attr("alt");
 			$.ajax({
 				url: url,
 				type: "POST",
 			})
 			.done(function (response) {
-				let alt = `[alt = ${tc.attr("value")}]`;
+				let alt = Comment.alt(tc.attr("value"));
 				console.log(response);
 				if ($(Comment.SELECTORS.like_group + alt).hasClass("liked")) {
 					$(Comment.SELECTORS.like_group + alt).removeClass("liked");
 				} else {
 					$(Comment.SELECTORS.like_group + alt).addClass("liked");
 				}
-				console.log('cccccccccccccccccccccc');
-				//$(Comment.SELECTORS.like_count + alt).html(response);
-				$(`.media ul .like-group span${alt}`).html(response);
+				$(Comment.SELECTORS.like_count + alt).html(response);
 			})
 			.fail(function (xhr, status, errorThrown) {
 				alert("Sorryyy, there was a problem!");
@@ -95,12 +94,9 @@ var Comment = {
 
 	showFormReply: function () {
 		$(Comment.SELECTORS.comment_ances).on( "click", Comment.SELECTORS.reply_button, function (event) {
-			console.log("cccc");
 			event.stopPropagation();
 			tc = $(this);
-			let alt = `[alt = "${tc.attr("value")}"]`,
-		 		thisComment = $(Comment.SELECTORS.reply_comment + alt);
-				console.log(thisComment.css("display"));
+			let thisComment = $(Comment.SELECTORS.reply_comment + Comment.alt(tc.attr("value")));
 			if (thisComment.css("display") === "none") {
 				thisComment.css("display", "block");
 				$(Comment.SELECTORS.reply_content).focus();
@@ -108,7 +104,7 @@ var Comment = {
 				thisComment.css("display", "none");
 			}
 		});
-	},
+	}, 
 
 	replyComment: function () {
 		$(Comment.SELECTORS.comment_ances).on("click", Comment.SELECTORS.reply_submit, function (event) {
@@ -116,23 +112,30 @@ var Comment = {
 			tc = $(this);
 			url = tc.attr("alt");
 			idCmt = tc.attr("value");
-			alt = `[alt = ${idCmt}]`;
 			$.ajax({
 				url: url, 
 				type: "POST",
 				data: {
 					blog_id: blog_id,
-					content: $(Comment.SELECTORS.reply_content + alt).val(),
+					content: $(Comment.SELECTORS.reply_content + Comment.alt(idCmt)).val(),
 					parentId: idCmt
 				},
 				dataType: "json",
 			})
 			.done(function (data) {
-				let html = Comment.renderComment(data, "likes", "comments", "add", "reply", "&comment_id="+data.id );
-				$(Comment.SELECTORS.comment_ances).append(html);
-				$(Comment.SELECTORS.reply_content + alt).val("");
-				//Comment.replyComment();
-				//Comment.like();
+				let html = Comment.renderComment(data, "likes", "comments", "add", "reply", "&comment_id="+data.id ),
+					path = data.path,
+				 	pathDots = (path.split(".")).length -1,
+					pathParent = 0;
+				if (pathDots <= 2) {
+					pathParent = parseInt(path.slice(path.length-11, path.length-6));
+				} else {
+					pathParent = parseInt(path.slice(12, 17));
+				}
+				console.log(pathParent);
+				$(Comment.SELECTORS.comment_reply + Comment.alt(pathParent)).append(html);
+				$(Comment.SELECTORS.reply_content + Comment.alt(idCmt)).val("");
+				$(Comment.SELECTORS.reply_comment + Comment.alt(idCmt)).css("display", "none");
 			})
 
 			.fail(function (xhr, status, errorThrown) {
@@ -143,7 +146,29 @@ var Comment = {
 			});
 			return false;
 		});
-	},	
+	},
+
+	deleteComment: function() {
+		$(Comment.SELECTORS.comment_ances).on("click", Comment.SELECTORS.delete_button, function (event) {
+			event.stopPropagation();
+			tc = $(this);
+			url = tc.attr("alt");
+			$.ajax({
+				url: url,
+				type: "POST",
+			})
+			.done(function(response){
+				
+			})
+			.fail(function (xhr, status, errorThrown) {
+				alert("Sorryyy, there was a problem!");
+				console.log("Error: " + errorThrown);
+				console.log("Status: " + status);
+				console.dir(xhr);
+			});
+			return false;
+		});
+	},
 
 	renderComment: function (data, ctl_like, ctl_comment, act_like, act_reply, params) {
 		imgURL = "media/upload/users/" + auth_img;
@@ -172,6 +197,11 @@ var Comment = {
 												Reply\
 											</a>\
 										</li>\
+										<li>\
+											<a class="delete-btn" href="" value="${data.id}" alt="index.php?ctl=${ctl_comment}&act=delete${params}">\
+												Delete\
+											</a>\
+										</li>\
 									</ul>\
 								</div>\
 							</div>\
@@ -194,10 +224,14 @@ var Comment = {
 								</div>\
 							</form>\
 						</div>\
-						<div class="comment-reply" alt="${data.id}">\
+						<div class="comment-reply ps-5" alt="${data.id}">\
 						</div>\
 					</div>`;
 					return html;
+	},
+
+	alt: function (id) {
+		return `[alt = "${id}"]`;
 	}
 };
 

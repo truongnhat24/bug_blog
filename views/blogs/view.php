@@ -42,7 +42,7 @@ array_push($mediaFiles['css'], RootREL . 'media/fontawesome/css/all.css');
                     <!-- COMMENT - START -->
                     <div class="comment-ances">
                         <?php foreach ($this->commentRecords as $data) { ?>
-                            <div class="media d-flex flex-column <?php if(substr_count($data['path'], '.') == 1) echo 'ms-5'; elseif (substr_count($data['path'], '.') > 1) echo 'ms-6'?>">
+                            <div alt="<?php echo $data['id']; ?>" class="media d-flex flex-column <?php if(substr_count($data['path'], '.') == 1) echo 'ms-5'; elseif (substr_count($data['path'], '.') > 1) echo 'ms-6'?>">
                                 <div class="d-flex flex-row">
                                     <a class="pull-left" href="#"><img class="w-75 rounded-circle" src="media/upload/users/<?php echo $data['image'] ?>"></a>
                                     <div class="media-body flex-grow-1">
@@ -84,6 +84,18 @@ array_push($mediaFiles['css'], RootREL . 'media/fontawesome/css/all.css');
                                                         Reply
                                                     </a>
                                                 </li>
+                                                <li>
+                                                    <a class="like-btn" href="" value="<?php echo $data['id']; ?>" alt="<?php $params = array('comment_id' => $data['id']);
+                                                                                                                        echo html_helpers::url(
+                                                                                                                            array(
+                                                                                                                                'ctl' => 'comments',
+                                                                                                                                'act' => 'delete',
+                                                                                                                                'params' => $params
+                                                                                                                            )
+                                                                                                                        ); ?>">
+                                                        Delete
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -112,7 +124,7 @@ array_push($mediaFiles['css'], RootREL . 'media/fontawesome/css/all.css');
                                         </div>
                                     </form>
                                 </div>
-                                <div class="comment-reply">						
+                                <div class="comment-reply ps-5" alt="<?php echo $data['id'] ?>">						
 						        </div>
                             </div>
                         <?php } ?>

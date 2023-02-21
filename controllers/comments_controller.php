@@ -29,4 +29,10 @@ class comments_controller extends main_controller
 			}
 		}
 	}
+
+	public function delete($params)
+	{
+		echo "<pre>";
+		var_dump($params);exit();
+	}
 }

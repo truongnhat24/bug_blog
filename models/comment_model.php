@@ -23,7 +23,7 @@ class comment_model extends main_model
 		if (isset($options)) {
 			$conditions .= ' and ' . $options;
 		}
-		$query = "SELECT $fields FROM users INNER JOIN $this->table ON $this->table.user_id = users.id" . $conditions;
+		$query = "SELECT $fields FROM users INNER JOIN $this->table ON $this->table.user_id = users.id $conditions ORDER BY $this->table.path ASC";
 		$result = mysqli_query($this->con, $query);
 		$result = $result->fetch_all(MYSQLI_ASSOC);
 		return $result;
