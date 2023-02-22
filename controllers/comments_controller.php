@@ -2,10 +2,16 @@
 class comments_controller extends main_controller
 {
 	protected comment_model $comment;
+	protected like_model $like;
 	public function __construct()
 	{
 		$this->comment = comment_model::getInstance();
+		$this->like = like_model::getInstance();
 		parent::__construct();
+	}
+
+	public function getAllRecords ($fields = "*", $options = null) {
+
 	}
 
 	public function add($params)
@@ -32,7 +38,15 @@ class comments_controller extends main_controller
 
 	public function delete($params)
 	{
-		echo "<pre>";
-		var_dump($params);exit();
+		$comment = $this->comment->getAllRecords("*", "blog_id =".$_POST['blog_id']);
+		$delCmt = $this->comment->getRecord($params['comment_id']);
+		$this->comment->delRecord($delCmt['id']);
+		$this->like->delRecord($delCmt['id']);
+		foreach ($comment as $cmt) {
+			if (str_contains($cmt['path'], $delCmt['path'])) {
+				$this->comment->delRecord($cmt['id']);
+				$this->like->delRecord($cmt['id']);
+			}
+		}
 	}
 }

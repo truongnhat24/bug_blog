@@ -76,12 +76,11 @@ class Main_Model
 	public function getAllRecords($fields = '*', $options = null)
 	{
 		$conditions = '';
-		if (isset($options['conditions'])) {
-			$conditions .= ' where ' . $options['conditions'];
+		if (isset($options)) {
+			$conditions .= ' where ' . $options;
 		}
 		$query = "SELECT " . $fields . " FROM " . $this->table . $conditions;
 		$result = mysqli_query($this->con, $query);
-
 		$result = $result->fetch_all(MYSQLI_ASSOC);
 		return $result;
 	}

@@ -37,7 +37,7 @@ array_push($mediaFiles['css'], RootREL . 'media/fontawesome/css/all.css');
                         </div>
                     </form>
 
-                    <h3><?php echo count($this->commentRecords); ?> Comments</h3>
+                    <h3><?php echo count($this->commentRecords);?> Comments</h3>
 
                     <!-- COMMENT - START -->
                     <div class="comment-ances">
@@ -85,17 +85,24 @@ array_push($mediaFiles['css'], RootREL . 'media/fontawesome/css/all.css');
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="like-btn" href="" value="<?php echo $data['id']; ?>" alt="<?php $params = array('comment_id' => $data['id']);
+                                                    <a class="delete-btn" href="" value="<?php echo $data['id']; ?>" alt="<?php $params = array('comment_id' => $data['id']);
                                                                                                                         echo html_helpers::url(
                                                                                                                             array(
                                                                                                                                 'ctl' => 'comments',
                                                                                                                                 'act' => 'delete',
                                                                                                                                 'params' => $params
-                                                                                                                            )
-                                                                                                                        ); ?>">
+                                                                                                                                )
+                                                                                                                            ); ?>">
                                                         Delete
                                                     </a>
                                                 </li>
+                                                <?php if ($_SESSION['auth']['id'] == $data['user_id']) { ?>
+                                                    <li>
+                                                        <a class="edit-btn" value="<?php echo $data['id']; ?>" >
+                                                            Edit
+                                                        </a>
+                                                    </li>
+                                                <?php } ?>
                                             </ul>
                                         </div>
                                     </div>
@@ -124,6 +131,31 @@ array_push($mediaFiles['css'], RootREL . 'media/fontawesome/css/all.css');
                                         </div>
                                     </form>
                                 </div>
+                                <?php if ($_SESSION['auth']['id'] == $data['user_id']) { ?>
+                                    <div class="edit-comment" alt="<?php echo $data['id'] ?>">
+                                        <form name="edit-form" class="edit-form ps-5 mt-3">
+                                            <h3 class="ps-4">Edit</h3>
+                                            <fieldset>
+                                                <div class="row">
+                                                    <div class="col-sm-3 col-lg-2">
+                                                        <img class="img-responsive w-50 rounded-circle" src="media/upload/users/<?php echo $_SESSION['auth']['image'] ?>">
+                                                    </div>
+                                                    <div class="form-group col-xs-12 col-sm-9 col-lg-10">
+                                                        <textarea class="edit-content form-control" alt="<?php echo $data['id'] ?>"  placeholder="Your comment" required></textarea>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                            <div class="d-flex justify-content-end">
+                                                <button name="edit" type="button" class="btn btn-custom-auth text-light edit-button" value="<?php echo $data['id'] ?>" alt="<?php echo html_helpers::url(
+                                                                                                                                                                                    array(
+                                                                                                                                                                                        'ctl' => 'comments',
+                                                                                                                                                                                        'act' => 'edit'
+                                                                                                                                                                                    )
+                                                                                                                                                                                ); ?>">Edit</button>
+                                            </div>
+                                        </form>
+                                    </div>                                                    
+                                <?php } ?>
                                 <div class="comment-reply ps-5" alt="<?php echo $data['id'] ?>">						
 						        </div>
                             </div>

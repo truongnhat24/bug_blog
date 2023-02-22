@@ -148,10 +148,12 @@ fieldset img {
 	color: aqua !important;
 }
 
-.reply-comment {
+.reply-comment, 
+.edit-comment {
 	display: none;
 }
 
-a.reply-btn:hover {
+a.reply-btn:hover,
+a.edit-btn:hover {
 	cursor: pointer;
 }

@@ -5,6 +5,7 @@ var Comment = {
 
 	SELECTORS: {
 		comment_ances: 		".comment-contain .comment-ances",
+		comment_media:		".comment-ances .media",
 		comment_contain: 	"#comments .comment-contain",
 		comment_form: 		"form.comment-form",
 		comment: 			"textarea#message",
@@ -20,6 +21,11 @@ var Comment = {
 		reply_submit: 		"div button.reply-button",
 		reply_content: 		"textarea.reply-content",
 		delete_button:		".media ul .delete-btn",
+		edit_button: 		".media ul .edit-btn",
+		edit_comment:		".media .edit-comment",
+		edit_form:			"form.edit-form",
+		edit_submit:		"div button.edit-button",
+		edit_content:		"textarea.edit-content",
 	},
 
 	init: function () {
@@ -27,6 +33,8 @@ var Comment = {
 		Comment.like();
 		Comment.showFormReply();
 		Comment.replyComment();
+		Comment.deleteComment();
+		Comment.showFormEdit();
 	},
 
 	addComment: function () {
@@ -99,12 +107,27 @@ var Comment = {
 			let thisComment = $(Comment.SELECTORS.reply_comment + Comment.alt(tc.attr("value")));
 			if (thisComment.css("display") === "none") {
 				thisComment.css("display", "block");
-				$(Comment.SELECTORS.reply_content).focus();
+				$(Comment.SELECTORS.reply_content + Comment.alt(tc.attr("value"))).focus();
 			} else {
 				thisComment.css("display", "none");
 			}
 		});
 	}, 
+
+	showFormEdit: function () {
+		$(Comment.SELECTORS.comment_ances).on( "click", Comment.SELECTORS.edit_button, function (event) {
+			event.stopPropagation();
+			tc = $(this);
+			let thisComment = $(Comment.SELECTORS.edit_comment + Comment.alt(tc.attr("value")));
+			if (thisComment.css("display") === "none") {
+				thisComment.css("display", "block");
+				valText = $(Comment.SELECTORS.comment_media + Comment.alt(tc.attr("value")) + " p").html();
+				$(Comment.SELECTORS.edit_content + Comment.alt(tc.attr("value"))).html(valText).focus();
+			} else {
+				thisComment.css("display", "none");
+			}
+		});
+	},
 
 	replyComment: function () {
 		$(Comment.SELECTORS.comment_ances).on("click", Comment.SELECTORS.reply_submit, function (event) {
@@ -148,24 +171,34 @@ var Comment = {
 		});
 	},
 
+	editComment: function() {
+
+	},
+
 	deleteComment: function() {
 		$(Comment.SELECTORS.comment_ances).on("click", Comment.SELECTORS.delete_button, function (event) {
 			event.stopPropagation();
 			tc = $(this);
 			url = tc.attr("alt");
-			$.ajax({
-				url: url,
-				type: "POST",
-			})
-			.done(function(response){
-				
-			})
-			.fail(function (xhr, status, errorThrown) {
-				alert("Sorryyy, there was a problem!");
-				console.log("Error: " + errorThrown);
-				console.log("Status: " + status);
-				console.dir(xhr);
-			});
+			let cf = confirm("Are you sure!");
+			if (cf == true) {
+				$.ajax({
+					url: url,
+					type: "POST",
+					data: {
+						blog_id: blog_id,
+					}
+				})
+				.done(function(response){
+					$(Comment.SELECTORS.comment_media + Comment.alt(tc.attr("value"))).html("").css({"border": "none", "padding": "0"});
+				})
+				.fail(function (xhr, status, errorThrown) {
+					alert("Sorryyy, there was a problem!");
+					console.log("Error: " + errorThrown);
+					console.log("Status: " + status);
+					console.dir(xhr);
+				});
+			}
 			return false;
 		});
 	},

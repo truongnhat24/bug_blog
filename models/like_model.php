@@ -11,6 +11,13 @@ class like_model extends main_model
         parent::addRecord($datas);
 	}
 
+	public function delRecord($id = null, $conditions = null)
+	{
+		if($conditions != null) $conditions = ' and ' . $conditions;
+		$query = "DELETE FROM $this->table WHERE type_id=$id" . $conditions;
+		return mysqli_query($this->con, $query);
+	}
+
 	public function getLikedRecords($user_id, $blog_id, $fields = '*', $options = null) {
 		$conditions = '';
 		if (isset($options)) {
