@@ -19,7 +19,7 @@ array_push($mediaFiles['css'], RootREL . 'media/fontawesome/css/all.css');
                         <fieldset>
                             <div class="row">
                                 <div class="col-sm-3 col-lg-2">
-                                    <img class="img-responsive" src="media/upload/users/<?php echo $data['image'] ?>">
+                                    <img class="img-responsive" src="media/upload/users/<?php echo $_SESSION['auth']['image'] ?>">
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-9 col-lg-10">
                                     <textarea class="form-control" id="message" placeholder="Your comment" required></textarea>
@@ -44,7 +44,7 @@ array_push($mediaFiles['css'], RootREL . 'media/fontawesome/css/all.css');
                         <?php foreach ($this->commentRecords as $data) { ?>
                             <div alt="<?php echo $data['id']; ?>" class="media d-flex flex-column <?php if(substr_count($data['path'], '.') == 1) echo 'ms-5'; elseif (substr_count($data['path'], '.') > 1) echo 'ms-6'?>">
                                 <div class="d-flex flex-row">
-                                    <a class="pull-left" href="#"><img class="w-75 rounded-circle" src="media/upload/users/<?php echo $data['image'] ?>"></a>
+                                    <a class="pull-left" href="#"><img class="w-75 h-75 rounded-circle" src="media/upload/users/<?php echo $data['image'] ?>"></a>
                                     <div class="media-body flex-grow-1">
                                         <h4 class="media-heading"><?php echo $data['name']; ?></h4>
                                         <p><?php echo $data['comment_content'] ?></p>
@@ -114,7 +114,7 @@ array_push($mediaFiles['css'], RootREL . 'media/fontawesome/css/all.css');
                                         <fieldset>
                                             <div class="row">
                                                 <div class="col-sm-3 col-lg-2">
-                                                    <img class="img-responsive w-50 rounded-circle" src="media/upload/users/<?php echo $_SESSION['auth']['image'] ?>">
+                                                    <img class="img-responsive w-50 h-50 rounded-circle" src="media/upload/users/<?php echo $_SESSION['auth']['image'] ?>">
                                                 </div>
                                                 <div class="form-group col-xs-12 col-sm-9 col-lg-10">
                                                     <textarea class="reply-content form-control" alt="<?php echo $data['id'] ?>"  placeholder="Your comment" required></textarea>
@@ -138,7 +138,7 @@ array_push($mediaFiles['css'], RootREL . 'media/fontawesome/css/all.css');
                                             <fieldset>
                                                 <div class="row">
                                                     <div class="col-sm-3 col-lg-2">
-                                                        <img class="img-responsive w-50 rounded-circle" src="media/upload/users/<?php echo $_SESSION['auth']['image'] ?>">
+                                                        <img class="img-responsive w-50 h-50 rounded-circle" src="media/upload/users/<?php echo $_SESSION['auth']['image'] ?>">
                                                     </div>
                                                     <div class="form-group col-xs-12 col-sm-9 col-lg-10">
                                                         <textarea class="edit-content form-control" alt="<?php echo $data['id'] ?>"  placeholder="Your comment" required></textarea>

@@ -136,6 +136,11 @@ fieldset img {
 	margin-right: 10px;
 }
 
+#comments img.img-responsive {
+	width: 150px !important;
+	height: 150px !important;
+}
+
 .btn-custom-auth {
 	background-color: #f05123 !important;
 }

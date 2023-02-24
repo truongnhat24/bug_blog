@@ -17,23 +17,22 @@ class SimpleImage_Component {
 			&& ($flies["image"]["size"] < 200000000)
 			&& in_array($extension, $allowedExts))
 		{
-			if ($flies["image"]["error"] > 0) {
-				//var_dump($flies["image"]["error"]);
+			if ($flies["image"]["error"] > 0) {				
 				echo 'error';
 				return false;
 		    }
 			$ulfd = UploadREL .$desfd.'/';
 			$newfn = time().rand(10000,99999).'.'.$extension;
 		    if (file_exists($ulfd . $newfn)) {
-		      	return true;
+				return true;
 		    } else {
 		        move_uploaded_file($flies["image"]["tmp_name"], $ulfd.$newfn);
 				$SimpleImg = new self;
 				$SimpleImg->load($ulfd.$newfn);
+				$newW = 200;
 				if(isset($newSize['height']) && !isset($newSize['width'])) {
 					$SimpleImg->resizeToHeight($newW);
 				} else {
-					$newW = 200;
 					if(isset($newSize['width'])) {
 						$newW = $newSize['width'];
 					}
