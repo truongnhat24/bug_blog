@@ -11,10 +11,8 @@ class like_model extends main_model
         parent::addRecord($datas);
 	}
 
-	public function delRecord($id = null, $conditions = null)
-	{
-		if($conditions != null) $conditions = ' and ' . $conditions;
-		$query = "DELETE FROM $this->table WHERE type_id=$id" . $conditions;
+	public function delCmtRecord($user_id, $type_id) {
+		$query = "DELETE FROM $this->table WHERE user_id=$user_id and type_id=$type_id";
 		return mysqli_query($this->con, $query);
 	}
 

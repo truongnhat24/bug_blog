@@ -16,6 +16,7 @@ class likes_controller extends main_controller
         $likeData = array('user_id' => $id, 'type_id' => $params['comment_id'], 'type' => 'comment');
         $commentData = $this->comment->getRecord($params['comment_id']);
         $checkData = $this->like->getAllRecords();
+        
         foreach ($checkData as $data) {
             if ($data['user_id'] == $likeData['user_id'] and $data['type_id'] == $likeData['type_id'] and $data['type'] == $likeData['type']) {
                 $commentData['like_count'] -= 1;

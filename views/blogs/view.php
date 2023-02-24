@@ -84,19 +84,19 @@ array_push($mediaFiles['css'], RootREL . 'media/fontawesome/css/all.css');
                                                         Reply
                                                     </a>
                                                 </li>
-                                                <li>
-                                                    <a class="delete-btn" href="" value="<?php echo $data['id']; ?>" alt="<?php $params = array('comment_id' => $data['id']);
-                                                                                                                        echo html_helpers::url(
-                                                                                                                            array(
-                                                                                                                                'ctl' => 'comments',
-                                                                                                                                'act' => 'delete',
-                                                                                                                                'params' => $params
-                                                                                                                                )
-                                                                                                                            ); ?>">
-                                                        Delete
-                                                    </a>
-                                                </li>
                                                 <?php if ($_SESSION['auth']['id'] == $data['user_id']) { ?>
+                                                    <li>
+                                                        <a class="delete-btn" href="" value="<?php echo $data['id']; ?>" alt="<?php $params = array('comment_id' => $data['id']);
+                                                                                                                            echo html_helpers::url(
+                                                                                                                                array(
+                                                                                                                                    'ctl' => 'comments',
+                                                                                                                                    'act' => 'delete',
+                                                                                                                                    'params' => $params
+                                                                                                                                    )
+                                                                                                                                ); ?>">
+                                                            Delete
+                                                        </a>
+                                                    </li>
                                                     <li>
                                                         <a class="edit-btn" value="<?php echo $data['id']; ?>" >
                                                             Edit
@@ -146,12 +146,13 @@ array_push($mediaFiles['css'], RootREL . 'media/fontawesome/css/all.css');
                                                 </div>
                                             </fieldset>
                                             <div class="d-flex justify-content-end">
-                                                <button name="edit" type="button" class="btn btn-custom-auth text-light edit-button" value="<?php echo $data['id'] ?>" alt="<?php echo html_helpers::url(
+                                                <button name="edit" type="button" class="btn btn-custom-auth text-light edit-button" value="<?php echo $data['id'] ?>" alt="<?php $params = array('comment_id' => $data['id']);
+                                                                                                                                                                                echo html_helpers::url(
                                                                                                                                                                                     array(
                                                                                                                                                                                         'ctl' => 'comments',
-                                                                                                                                                                                        'act' => 'edit'
-                                                                                                                                                                                    )
-                                                                                                                                                                                ); ?>">Edit</button>
+                                                                                                                                                                                        'act' => 'edit',
+                                                                                                                                                                                        )
+                                                                                                                                                                                    ); ?>">Edit</button>
                                             </div>
                                         </form>
                                     </div>                                                    

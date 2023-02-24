@@ -29,11 +29,12 @@ var Comment = {
 	},
 
 	init: function () {
-		Comment.addComment();
 		Comment.like();
-		Comment.showFormReply();
+		Comment.addComment();
 		Comment.replyComment();
+		Comment.editComment();
 		Comment.deleteComment();
+		Comment.showFormReply();
 		Comment.showFormEdit();
 	},
 
@@ -72,13 +73,14 @@ var Comment = {
 	},
 
 	like: function () {
-		$(Comment.SELECTORS.comment_ances).on("click", Comment.SELECTORS.like_button,	function (event) {
+		$(Comment.SELECTORS.comment_ances).on("click", Comment.SELECTORS.like_button, function (event) {
 			event.stopPropagation();
 			tc = $(this);
 			url = tc.attr("alt");
 			$.ajax({
 				url: url,
 				type: "POST",
+				dataType: "json",
 			})
 			.done(function (response) {
 				let alt = Comment.alt(tc.attr("value"));
@@ -155,7 +157,6 @@ var Comment = {
 				} else {
 					pathParent = parseInt(path.slice(12, 17));
 				}
-				console.log(pathParent);
 				$(Comment.SELECTORS.comment_reply + Comment.alt(pathParent)).append(html);
 				$(Comment.SELECTORS.reply_content + Comment.alt(idCmt)).val("");
 				$(Comment.SELECTORS.reply_comment + Comment.alt(idCmt)).css("display", "none");
@@ -172,7 +173,32 @@ var Comment = {
 	},
 
 	editComment: function() {
-
+		$(Comment.SELECTORS.comment_ances).on("click", Comment.SELECTORS.edit_submit, function (event) {
+			event.stopPropagation();
+			tc = $(this);
+			url = tc.attr("alt");
+			idCmt = tc.attr("value");
+			$.ajax({
+				url: url,
+				type: "POST", 
+				data: {
+					comment_id: idCmt,
+					content: $(Comment.SELECTORS.edit_content + Comment.alt(idCmt)).val(),
+				},
+				dataType: "json",
+			})
+			.done( function(response) {
+				$(Comment.SELECTORS.comment_media + Comment.alt(idCmt) + " p").html(response.comment_content);
+				$(Comment.SELECTORS.edit_comment + Comment.alt(tc.attr("value"))).css("display", "none");
+			})
+			.fail(function (xhr, status, errorThrown) {
+				alert("Sorryyy, there was a problem!");
+				console.log("Error: " + errorThrown);
+				console.log("Status: " + status);
+				console.dir(xhr);
+			});
+			return false;
+		});
 	},
 
 	deleteComment: function() {
@@ -205,7 +231,7 @@ var Comment = {
 
 	renderComment: function (data, ctl_like, ctl_comment, act_like, act_reply, params) {
 		imgURL = "media/upload/users/" + auth_img;
-		let html = `<div class="media d-flex flex-column">\
+		let html = `<div class="media d-flex flex-column" alt="${data.id}">\
 						<div class="d-flex flex-row">\
 							<a class="pull-left" href="#"><img class="w-75 rounded-circle" src="${imgURL}"></a>\
 							<div class="media-body flex-grow-1">\
@@ -235,6 +261,11 @@ var Comment = {
 												Delete\
 											</a>\
 										</li>\
+                                        <li>\
+                                            <a class="edit-btn" value="${data.id}" >\
+                                                Edit\
+                                            </a>\
+                                        </li>\
 									</ul>\
 								</div>\
 							</div>\
@@ -257,6 +288,24 @@ var Comment = {
 								</div>\
 							</form>\
 						</div>\
+						<div class="edit-comment" alt="${data.id}">
+							<form name="edit-form" class="edit-form ps-5 mt-3">
+								<h3 class="ps-4">Edit</h3>
+								<fieldset>
+									<div class="row">
+										<div class="col-sm-3 col-lg-2">
+											<img class="img-responsive w-50 rounded-circle" src="${imgURL}">
+										</div>
+										<div class="form-group col-xs-12 col-sm-9 col-lg-10">
+											<textarea class="edit-content form-control" alt="${data.id}" placeholder="Your comment" required></textarea>
+										</div>
+									</div>
+								</fieldset>
+								<div class="d-flex justify-content-end">
+									<button name="edit" type="button" class="btn btn-custom-auth text-light edit-button" value="${data.id}" alt="index.php?ctl=${ctl_comment}&act=edit">Edit</button>
+								</div>
+							</form>
+						</div>
 						<div class="comment-reply ps-5" alt="${data.id}">\
 						</div>\
 					</div>`;

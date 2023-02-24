@@ -39,4 +39,26 @@ class comment_model extends main_model
 		parent::editRecord($last_record['id'], $updatePath);
 		return parent::getRecord($last_record['id']);
 	}
+
+	public function addHistoryComment($datas) {
+		global $app;
+		$fields = $values = '';
+		$i = 0;
+		$datas['content'] = mysqli_real_escape_string($this->con, $datas['content']);
+		foreach ($datas as $k => $v) {
+			if ($i) {
+				$fields .= ',';
+				$values .= ',';
+			}
+			$fields .= $k;
+			$values .= "'" . $v . "'";
+			$i++;
+		}
+		$query = "INSERT INTO comment_history ($fields) VALUES ($values)";
+		if ($createdTime = $this->recordTime($app['recordTime']['created'])) {
+			$fields .= ',' . $app['recordTime']['created'];
+			$values .= ',' . $createdTime;
+		}		
+		return mysqli_query($this->con, $query);
+	}
 }
