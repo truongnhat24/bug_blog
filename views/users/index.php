@@ -19,7 +19,7 @@
 		</div>
 
 		<div class="control-btn col-4 d-flex justify-content-center">
-            <a href="#" class="link-btn d-flex align-items-center flex-column">
+            <a href="<?php echo html_helpers::url(['ctl'=>'users', 'act'=>'change_pass']); ?>" class="link-btn d-flex align-items-center flex-column">
                 <img class="img-btn" src="media/img/changepass.png" alt="pass">
                 <h3>Change password</h3>
             </a>

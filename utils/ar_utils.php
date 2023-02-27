@@ -6,18 +6,17 @@ class ar_utils {
     }
 
     public static function is_multi2($a) {
-	foreach ($a as $v) {
-	if (is_array($v)) return true;
+		foreach ($a as $v) {
+			if (is_array($v)) return true;
+		}
+		return false;
 	}
-	return false;
-    }
 
     public static function is_multi3($a) {
-	$c = count($a);
-	for ($i=0;$i<$c;$i++) {
-		if (is_array($a[$i])) return true;
-	}
+		$c = count($a);
+		for ($i=0;$i<$c;$i++) {
+			if (is_array($a[$i])) return true;
+		}
 	return false;
     }
 }
-?>

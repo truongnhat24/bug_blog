@@ -27,6 +27,29 @@
             $this->display();
         }
 
+        public function change_pass() {
+            $option['act'] = 'change_pass';
+            if(isset($_POST['change-pass'])) {
+                $users = $_POST['data']['users'];
+                $password = md5($users['old']);
+                if($this->user->checkOldPassword($password) == '1' ) {
+                    if($users['new'] !== $users['confirm']) {
+                        $this->errors = 'Confirmation password incorrect';
+                        return $this->display();
+                    } else {
+                    $newpass = md5($users['new']);
+                    return $this->user->editRecord($_SESSION['auth']['id'], array('password' => $newpass));
+                    }
+                } else {
+                    //var_dump("cc"); exit();
+                    $this->errors = 'Password invalid';
+                    //header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'change_pass')));
+                    //return $this->change_pass() ;
+                }
+            }
+            $this->display();
+        }
+
         public function user_profile() {
             $records = $this->getData($_SESSION['auth']['id'], 'user_profile');
             $this->setProperty('records',$records);
@@ -86,6 +109,27 @@
                     if ($this->user->addRecord($userData)){
                         header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'login')));
                     }
+                }
+            }
+        }
+
+        public function changePass() {
+            if(isset($_POST['change-pass'])) {
+                $users = $_POST['data']['users'];
+                $password = md5($users['old']);
+                if($this->user->checkOldPassword($password) == '1' ) {
+                    if($users['new'] !== $users['confirm']) {
+                        $this->errors = 'Confirmation password incorrect';
+                        return $this->display();
+                    } else {
+                    $newpass = md5($users['new']);
+                    return $this->user->editRecord($_SESSION['auth']['id'], array('password' => $newpass));
+                    }
+                } else {
+                    //var_dump("cc"); exit();
+                    $this->errors = 'Password invalid';
+                    //header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'change_pass')));
+                    //return $this->change_pass() ;
                 }
             }
         }

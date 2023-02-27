@@ -37,5 +37,12 @@ class user_model extends main_model {
 		} else $record=false;
 		return $record;
 	}
+
+	public function checkOldPassword($password) {
+		$email = ucfirst($_SESSION['auth']['email']);
+		$sql = "SELECT COUNT(id) as total  FROM `users` WHERE `email` = '".$email."' AND `password` = '".$password."'";
+		$result = $this->con->query($sql);
+		return $result->fetch_assoc()['total'];
+	}
 }
 ?>
