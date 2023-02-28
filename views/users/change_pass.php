@@ -43,9 +43,16 @@
         </div>
     </div>
 </form>
+<?php if($this->errors) { ?>
+    <div class="alert alert-danger alert-dismissible error-change" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <?php echo $this->errors; ?>
+    </div>
+    <?php } ?>
 <?php global $mediaFiles; ?>
 <?php array_push($mediaFiles['js'], RootREL."media/js/jquery.min.js"); ?>
 <?php array_push($mediaFiles['js'], RootREL."media/js/changepass.js"); ?>
+<?php array_push($mediaFiles['js'], RootREL."media/bootstrap/js/bootstrap.min.js"); ?>
 
 <?php } else header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'login')))?>
 

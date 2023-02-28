@@ -26,7 +26,7 @@
 
                 <form name="register-form" method="POST" action="<?php echo html_helpers::url(
                     array('ctl'=>'users', 
-                          'act'=>'loginSubmit', 
+                          'act'=>'login', 
                           'params'=>$params)); ?>" class="mb-md-5 mt-md-4 pb-5 form-register">
                   <?php if ($this->errors) {?>        
                     <div class="message error validation_errors" >

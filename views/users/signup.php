@@ -30,7 +30,7 @@
 
                 <form name="register-form" method="POST" action="<?php echo html_helpers::url(
                     array('ctl'=>'users', 
-                          'act'=>'signupSubmit', 
+                          'act'=>'signup', 
                           'params'=>$params));?>" class="mb-md-5 mt-md-4 pb-5 form-register">
 
                   <div class="form-outline">

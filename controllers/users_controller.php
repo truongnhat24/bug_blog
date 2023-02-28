@@ -19,11 +19,31 @@
         
         public function login() {
             $option['act'] = 'login';
+            if(isset($_POST['log-user'])) {
+                $userData = $_POST['data'][$this->controller];
+                $userCur = $this->user->loginData($userData);
+                if (!$userCur){
+                    $this->errors = 'Email or password invalid';
+                    return $this->display();
+                }
+                else {
+                    $_SESSION['auth'] = $userCur;
+                    header( "Location: ".html_helpers::url(array('ctl'=>'home')));
+                }
+            }
             $this->display();
         }
 
         public function signup() {
             $option['act'] = 'signup';
+            if(isset($_POST['reg-user'])) {
+                $userData = $_POST['data'][$this->controller];
+                if(!empty($userData['username']))  {
+                    if ($this->user->addRecord($userData)){
+                        header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'login')));
+                    }
+                }
+            }
             $this->display();
         }
 
@@ -37,14 +57,14 @@
                         $this->errors = 'Confirmation password incorrect';
                         return $this->display();
                     } else {
-                    $newpass = md5($users['new']);
-                    return $this->user->editRecord($_SESSION['auth']['id'], array('password' => $newpass));
+                        $newpass = md5($users['new']);
+                        if($this->user->editRecord($_SESSION['auth']['id'], array('password' => $newpass))) {
+                            header( "Location: ".html_helpers::url(array('ctl'=>'users')));                            
+                        }
                     }
                 } else {
-                    //var_dump("cc"); exit();
                     $this->errors = 'Password invalid';
-                    //header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'change_pass')));
-                    //return $this->change_pass() ;
+                    return $this->display() ;
                 }
             }
             $this->display();
@@ -86,52 +106,16 @@
             session_destroy(); 
             header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'login')));
         }
-        
-        public function loginSubmit() {
-            if(isset($_POST['log-user'])) {
-                $userData = $_POST['data'][$this->controller];
-                $userCur = $this->user->loginData($userData);
-                if (!$userCur){
-                    $this->errors = 'Email or password invalid';
-                    return $this->display();
-                }
-                else {
-                    $_SESSION['auth'] = $userCur;
-                    header( "Location: ".html_helpers::url(array('ctl'=>'home')));
-                }
-            }
-        }
 
-        public function signupSubmit() {
-            if(isset($_POST['reg-user'])) {
-                $userData = $_POST['data'][$this->controller];
-                if(!empty($userData['username']))  {
-                    if ($this->user->addRecord($userData)){
-                        header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'login')));
-                    }
-                }
-            }
-        }
-
-        public function changePass() {
-            if(isset($_POST['change-pass'])) {
-                $users = $_POST['data']['users'];
-                $password = md5($users['old']);
-                if($this->user->checkOldPassword($password) == '1' ) {
-                    if($users['new'] !== $users['confirm']) {
-                        $this->errors = 'Confirmation password incorrect';
-                        return $this->display();
-                    } else {
-                    $newpass = md5($users['new']);
-                    return $this->user->editRecord($_SESSION['auth']['id'], array('password' => $newpass));
-                    }
-                } else {
-                    //var_dump("cc"); exit();
-                    $this->errors = 'Password invalid';
-                    //header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'change_pass')));
-                    //return $this->change_pass() ;
-                }
-            }
-        }
+        // public function signupSubmit() {
+        //     if(isset($_POST['reg-user'])) {
+        //         $userData = $_POST['data'][$this->controller];
+        //         if(!empty($userData['username']))  {
+        //             if ($this->user->addRecord($userData)){
+        //                 header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'login')));
+        //             }
+        //         }
+        //     }
+        // }
     }
 ?>

@@ -27,4 +27,9 @@ $(document).ready(function () {
             return false;
         }
     })
+
+    $(".close").click((event) => {
+        $(".error-change").css('display', 'none');
+        event.preventDefault();
+    })
 });
