@@ -106,16 +106,5 @@
             session_destroy(); 
             header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'login')));
         }
-
-        // public function signupSubmit() {
-        //     if(isset($_POST['reg-user'])) {
-        //         $userData = $_POST['data'][$this->controller];
-        //         if(!empty($userData['username']))  {
-        //             if ($this->user->addRecord($userData)){
-        //                 header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'login')));
-        //             }
-        //         }
-        //     }
-        // }
     }
 ?>
