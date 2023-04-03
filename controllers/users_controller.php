@@ -36,14 +36,14 @@
 
         public function signup() {
             $option['act'] = 'signup';
-            if(isset($_POST['reg-user'])) {
-                $userData = $_POST['data'][$this->controller];
-                if(!empty($userData['username']))  {
-                    if ($this->user->addRecord($userData)){
-                        header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'login')));
+                if(isset($_POST['reg-user'])) {
+                    $userData = $_POST['data'][$this->controller];
+                    if(!empty($userData['username']))  {
+                        if ($this->user->addRecord($userData)){
+                            header( "Location: ".html_helpers::url(array('ctl'=>'users', 'act'=>'login')));
+                        }
                     }
                 }
-            }
             $this->display();
         }
 
