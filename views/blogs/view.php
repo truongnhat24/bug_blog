@@ -114,7 +114,9 @@ array_push($mediaFiles['css'], RootREL . 'media/fontawesome/css/all.css');
                                         <fieldset>
                                             <div class="row">
                                                 <div class="col-sm-3 col-lg-2">
-                                                    <img class="img-responsive w-50 h-50 rounded-circle" src="media/upload/users/<?php echo $_SESSION['auth']['image'] ?>">
+                                                    <div class="img-reply-contain rounded-circle">
+                                                        <img class="img-responsive w-100" src="media/upload/users/<?php echo $_SESSION['auth']['image'] ?>">
+                                                    </div>
                                                 </div>
                                                 <div class="form-group col-xs-12 col-sm-9 col-lg-10">
                                                     <textarea class="reply-content form-control" alt="<?php echo $data['id'] ?>"  placeholder="Your comment" required></textarea>

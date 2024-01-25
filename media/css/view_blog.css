@@ -136,9 +136,11 @@ fieldset img {
 	margin-right: 10px;
 }
 
-#comments img.img-responsive {
-	width: 150px !important;
-	height: 150px !important;
+#comments .img-reply-contain {
+	max-width: 100px;
+	max-height: 100px;
+	height: 100%;
+	overflow: hidden;
 }
 
 .btn-custom-auth {
